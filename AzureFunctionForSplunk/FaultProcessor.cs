@@ -17,7 +17,7 @@ namespace AzureFunctionForSplunk
             IBinder blobFaultBinder,
             TraceWriter log)
         {
-            Try
+            try
             {
                 var faultData = JsonConvert.DeserializeObject<TransmissionFaultMessage>(fault);
 
