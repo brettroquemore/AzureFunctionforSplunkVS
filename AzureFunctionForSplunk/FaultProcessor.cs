@@ -20,15 +20,19 @@ namespace AzureFunctionForSplunk
             try
             {
                 var faultData = JsonConvert.DeserializeObject<TransmissionFaultMessage>(fault);
+                log.Info("Line 23");
 
                 var blobReader = await blobFaultBinder.BindAsync<CloudBlockBlob>(
                         new BlobAttribute($"transmission-faults/{faultData.id}", FileAccess.ReadWrite));
+                log.Info("Line 27");
 
                 var json = await blobReader.DownloadTextAsync();
+                log.Info("Line 30");
 
                 try
                 {
                     List<string> faultMessages = await Task<List<string>>.Factory.StartNew(() => JsonConvert.DeserializeObject<List<string>>(json));
+                    log.Info("Line 35");
                     await Utils.obHEC(faultMessages, log);
                 } catch
                 {
