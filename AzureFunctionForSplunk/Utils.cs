@@ -177,6 +177,14 @@ namespace AzureFunctionForSplunk
                 {
                     throw new System.Net.Http.HttpRequestException($"StatusCode from Splunk: {response.StatusCode}, and reason: {response.ReasonPhrase}");
                 }
+                else if(response.StatusCode == HttpStatusCode.OK)
+                {
+                    log.Info("successfully sent");
+                }
+                else
+                {
+                    log.Info(response.StatusCode.ToString());
+                }
             }
             catch (System.Net.Http.HttpRequestException e)
             {
