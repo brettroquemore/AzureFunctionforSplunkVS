@@ -1,4 +1,4 @@
-﻿//
+//
 // AzureFunctionForSplunkVS
 //
 // Copyright (c) Microsoft Corporation
@@ -130,7 +130,10 @@ namespace AzureFunctionForSplunk
         {
             // if user has not configured a cert, anything goes
             if (string.IsNullOrWhiteSpace(splunkCertThumbprint))
+            {
+                Console.WriteLine("true");
                 return true;
+            }
 
             // if user has configured a cert, must match
             var thumbprint = cert.GetCertHashString();
@@ -155,6 +158,7 @@ namespace AzureFunctionForSplunk
             ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateMyCert);
 
             var newClientContent = new StringBuilder();
+            log.Info("number of items: " + standardizedEvents.Count);
             foreach (string item in standardizedEvents)
             {
                 newClientContent.Append(item);
@@ -167,6 +171,7 @@ namespace AzureFunctionForSplunk
                 req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 req.Headers.Add("Authorization", "Splunk " + splunkToken);
                 req.Content = new StringContent(newClientContent.ToString(), Encoding.UTF8, "application/json");
+                log.Info("ready to send");
                 HttpResponseMessage response = await SingleHttpClientInstance.SendToSplunk(req);
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
