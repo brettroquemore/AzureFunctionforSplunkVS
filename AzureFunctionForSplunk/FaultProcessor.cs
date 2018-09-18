@@ -20,6 +20,7 @@ namespace AzureFunctionForSplunk
             try
             {
                 var faultData = JsonConvert.DeserializeObject<TransmissionFaultMessage>(fault);
+                log.Info(fault);
                 log.Info("Line 23");
 
                 var blobReader = await blobFaultBinder.BindAsync<CloudBlockBlob>(
