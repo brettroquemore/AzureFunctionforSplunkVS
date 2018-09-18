@@ -1,4 +1,4 @@
-﻿//
+//
 // AzureFunctionForSplunkVS
 //
 // Copyright (c) Microsoft Corporation
@@ -74,6 +74,7 @@ namespace AzureFunctionForSplunk
 
                         string json = await Task<string>.Factory.StartNew(() => JsonConvert.SerializeObject(splunkMsgs.splunkEventMessages));
                         await blobWriter.UploadTextAsync(json);
+                        log.Info(json + " | " + id + "has been uploaded into blob.");
                     }
                     catch (Exception exFaultBlob)
                     {
@@ -88,6 +89,7 @@ namespace AzureFunctionForSplunk
                         var queueWriter = await queueFaultBinder.BindAsync<CloudQueue>(
                             new QueueAttribute("transmission-faults"));
                         await queueWriter.AddMessageAsync(new CloudQueueMessage(qMsgJson));
+                        log.Info(qMsgJson + "has been uploaded into blob.");
                     }
                     catch (Exception exFaultQueue)
                     {
