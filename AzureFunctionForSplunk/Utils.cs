@@ -172,13 +172,23 @@ namespace AzureFunctionForSplunk
                 {
                     throw new System.Net.Http.HttpRequestException($"StatusCode from Splunk: {response.StatusCode}, and reason: {response.ReasonPhrase}");
                 }
+                else if(response.StatusCode == HttpStatusCode.OK)
+                {
+                    log.Info("successfully sent");
+                }
+                else
+                {
+                    log.Info(response.StatusCode.ToString());
+                }
             }
             catch (System.Net.Http.HttpRequestException e)
             {
+                log.Error(e.ToString());
                 throw new System.Net.Http.HttpRequestException("Sending to Splunk. Is Splunk service running?", e);
             }
             catch (Exception f)
             {
+                log.Error(f.ToString());
                 throw new System.Exception("Sending to Splunk. Unplanned exception.", f);
             }
         }
