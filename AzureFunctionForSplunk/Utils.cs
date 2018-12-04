@@ -1,4 +1,4 @@
-﻿//
+//
 // AzureFunctionForSplunkVS
 //
 // Copyright (c) Microsoft Corporation
